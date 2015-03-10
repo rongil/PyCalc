@@ -11,8 +11,6 @@
 " ==============================================================================
 " Insert Mode:
 " <C-b> - Insert solved inputted python expression, into buffer; don't store.
-" <C-B> - Insert solved inputted python expression, into buffer;
-"         save into register @m.
 " Normal Mode:
 " :PyCalc <args> - Insert solved python expresion, args, into buffer;
 "                  don't store.
@@ -29,7 +27,6 @@
 
 " Insert mode shortcut
 :imap <C-b> <C-O>:call PyCalc(0)<CR>
-:imap <C-B> <C-O>:call PyCalc(1)<CR>
 
 " Python Imports
 :py from math import *
