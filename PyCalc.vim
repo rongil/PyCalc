@@ -23,7 +23,7 @@
 " ------------------------------------------------------------------------------
 
 " Normal mode command
-:command! -nargs=+ PyCalc call PyCalc(0, <q-args>) | MergeLines(@m)
+:command! -nargs=+ PyCalc call PyCalc(0, <q-args>)
 :command! -nargs=+ PyCalcSave call PyCalc(1, <q-args>)
 :command! -nargs=+ PyCalcView :py print <args>
 
@@ -51,7 +51,7 @@ function! PyCalc(save, ...)
     execute "py print " . exp
     redir END
     call PasteAndMerge("m")
-    if !a:save
+    if a:save == 0
       let @m = mReg "Restore the contents of the m register
     endif
   endif
