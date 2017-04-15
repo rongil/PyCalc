@@ -4,9 +4,6 @@
 "
 " Copyright 2017 Ronald Gil <rongil@mit.edu>
 "
-" Distributed under the terms of the Vim license. See ":help license" for
-" details.
-"
 " Usage:
 " ==============================================================================
 " Normal Mode:
