@@ -2,7 +2,7 @@
 "
 " Credit to http://vim.wikia.com/wiki/Scientific_calculator for the idea.
 "
-" Copyright 2015 Ronald Gil <rongil@mit.edu>
+" Copyright 2017 Ronald Gil <rongil@mit.edu>
 "
 " Distributed under the terms of the Vim license. See ":help license" for
 " details.
