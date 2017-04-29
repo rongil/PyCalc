@@ -22,9 +22,9 @@
 
 " Set python version
 if has('python3')
-  let s:python_version = 3
+  let s:pysolve_python = ':py3 '
 elseif has('python')
-  let s:python_version = 2
+  let s:pysolve_python = ':py '
 else
   echo 'PySolve requires python support.'
   finish
@@ -34,10 +34,10 @@ endif
 " Normal mode command
 :command! -nargs=+ PySolve call PySolve(0, <q-args>)
 :command! -nargs=+ PySolveSave call PySolve(1, <q-args>)
-:command! -nargs=+ PySolveView :py print <args>
+:command! -nargs=+ PySolveView exec s:pysolve_python . "print(<args>)"
 
 " Python Imports
-:py from math import *
+exec s:pysolve_python 'from math import *'
 
 
 " Main expression evaluator
@@ -54,7 +54,7 @@ function! PySolve(save, ...)
     " TODO: Allow register variation
     let mReg = @m " Store the old contents of the m register
     redir @m
-    execute "py print " . exp
+    exec s:pysolve_python . "print(" . exp . ")"
     redir END
 
     let result_len = strlen(Strip(@m))
