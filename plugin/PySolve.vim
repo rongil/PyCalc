@@ -54,7 +54,7 @@ function! PySolve(save, ...)
     " TODO: Allow register variation
     let mReg = @m " Store the old contents of the m register
     redir @m
-    exec s:pysolve_python . "print(" . exp . ")"
+    exec s:pysolve_python . 'print(' . exp . ')'
     redir END
 
     let result_len = strlen(Strip(@m))
@@ -62,7 +62,7 @@ function! PySolve(save, ...)
 
     " Needs to be > 1 because empty case contains a ^J character
     " Also don't paste if there was an error
-    if result_len > 1 && @m !~# "Error detected while processing"
+    if result_len > 1 && @m !~# 'Error detected while processing'
       call PasteAndMerge("m", result_len)
       let success = 1
     endif
@@ -78,7 +78,7 @@ endfunction
 " input.
 function! PasteAndMerge(reg, strlen)
   if a:strlen " Ignore the empty string case
-    silent execute "normal! \"" . a:reg . "pj:le\<enter>kgJ" . a:strlen . "l"
+    silent execute "normal! \"" . a:reg . "pj:le\<enter>kgJ" . a:strlen . 'l'
   endif
 endfunction
 
