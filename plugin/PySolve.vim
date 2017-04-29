@@ -26,7 +26,9 @@ if has('python3')
 elseif has('python')
   let s:pysolve_python = ':py '
 else
-  echo 'PySolve requires python support.'
+  echohl WarningMsg
+  echom 'PySolve requires python support.'
+  echohl None
   finish
 endif
 
