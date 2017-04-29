@@ -20,6 +20,16 @@
 " PySolveView - <YOUR_KEY> <C-O>:call PySolveView<CR>
 " ------------------------------------------------------------------------------
 
+" Set python version
+if has('python3')
+  let s:python_version = 3
+elseif has('python')
+  let s:python_version = 2
+else
+  throw 'PySolve requires python.'
+endif
+
+
 " Normal mode command
 :command! -nargs=+ PySolve call PySolve(0, <q-args>)
 :command! -nargs=+ PySolveSave call PySolve(1, <q-args>)
