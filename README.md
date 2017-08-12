@@ -7,7 +7,7 @@ Note: There are no default mappings.
 
 #### Normal Mode:
 `:PySolve <args>` - Insert solved python expresion, args, into buffer; don't store.<br>
-`:PySolveSave <args>` - Insert solved python expresion, args, into buffer; save into register @m.<br>
+`:PySolveSave <args>` - Save solved python expresion, args, into a register.<br>
 `:PySolveView <args>` - Print solved python expression, args, as a message; dont't store.
 
 #### Insert Mode:
