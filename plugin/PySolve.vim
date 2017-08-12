@@ -9,8 +9,7 @@
 " Normal Mode:
 " :PySolve <args>     - Insert solved python expresion, args, into buffer;
 "                       don't store.
-" :PySolveSave <args> - Insert solved python expresion, args, into buffer;
-"                       save into register @m.
+" :PySolveSave <args> - Save solved python expresion, args, into a register.
 " :PySolveView <args> - Print solved python expression, args, as a message;
 "                       dont't store.
 "
@@ -43,50 +42,48 @@ exec s:pysolve_python 'from math import *'
 
 
 " Constants
-let s:input_prompt = 'Python Exp: '
+let s:default_register = 'm'
+let s:expression_input_prompt = 'Python Exp: '
+let s:register_input_prompt = 'Register: '
 let s:python_error_message = 'Error detected while processing'
 
 
 " Main expression evaluator
 function! PySolve(save, ...)
   " Either ask for the expression or use the one already provided
-  if !a:0
-    let exp = Strip(input(s:input_prompt))
+  if a:0 == 0
+    let exp = Strip(input(s:expression_input_prompt))
   else
     let exp = a:1
   endif
 
-  if strlen(exp) == 0 || exp =~ "<Esc>$"
+  if empty(exp) || exp =~ "<Esc>$"
     return
   endif
 
-  if a:save
-    " TODO: Allow register variation
-    let result_register = 'm'
-  else
-    " Original register contents will be preserved
-    " so the particular register is unimportant
-    let result_register = 'm'
-  endif
-
   let pysolve_command = s:pysolve_python.'print('.exp.')'
-
   redir => result
   exec pysolve_command
   redir END
 
-  " Remove extra starting byte and
-  " leading/trailing whitespace
+  " Remove extra starting byte and leading/trailing whitespace
   let result = Strip(strpart(result, 1))
 
-  if strlen(result) > 0 && result !~# s:python_error_message
+  if !empty(result) && result !~# s:python_error_message
     if a:save
+      let result_register = Strip(input(s:register_input_prompt))
+      if strlen(result_register) != 1
+        echohl WarningMsg
+        echo "\nInvalid register."
+        echohl None
+        return
+      endif
       call setreg(result_register, result)
     else
-      let old_register_content = getreg(result_register, 1)
-      call setreg(result_register, result)
-      silent exec "normal! \"".result_register."Pl"
-      call setreg(result_register, old_register_content)
+      let old_register_content = getreg(s:default_register, 1)
+      call setreg(s:default_register, result)
+      silent exec "normal! \"".s:default_register."Pl"
+      call setreg(s:default_register, old_register_content)
     endif
   endif
 endfunction
