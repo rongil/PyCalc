@@ -56,60 +56,41 @@ function! PySolve(save, ...)
     let exp = a:1
   endif
 
-  " Do nothing if the escape key was pressed
-  if exp =~ "<Esc>$"
+  if strlen(exp) == 0 || exp =~ "<Esc>$"
     return
   endif
 
-  " TODO: Allow register variation
-  let result_register = 'm'
-  let old_register_content = GetRegister(result_register)
+  if a:save
+    " TODO: Allow register variation
+    let result_register = 'm'
+  else
+    " Original register contents will be preserved
+    " so the particular register is unimportant
+    let result_register = 'm'
+  endif
 
   let pysolve_command = s:pysolve_python.'print('.exp.')'
-  call Redir(result_register, pysolve_command)
 
-  let result = GetRegister(result_register)
-  let result_len = strlen(Strip(result))
-
-  let success = 0
-  " Needs to be > 1 because empty case contains a ^J character
-  " Also don't paste if there was an error
-  if result_len > 1 && result !~# s:python_error_message
-    call PasteAndMerge(result_register, result_len)
-    let success = 1
-  endif
-
-  if !a:save || !success
-    call SetRegister(result_register, old_register_content)
-  endif
-endfunction
-
-
-
-function! GetRegister(register)
-  exec 'let contents = @'.a:register
-  return contents
-endfunction
-
-function! SetRegister(register, contents)
-  exec 'let @'.a:register.' = a:contents'
-endfunction
-
-" Helper function to paste from a register and merge the lines.
-" The strlen argument is used to get the cursor to the end of the pasted
-" input.
-function! PasteAndMerge(register, strlen)
-  if a:strlen " Ignore the empty string case
-    silent execute "normal! \"" . a:register . "pj:le\<enter>kgJ" . a:strlen . 'l'
-  endif
-endfunction
-
-" Adapted from: https://gist.github.com/intuited/362802
-function! Redir(register, command)
-  exec 'redir @'.a:register
-  exec a:command
+  redir => result
+  exec pysolve_command
   redir END
+
+  " Remove extra starting byte and
+  " leading/trailing whitespace
+  let result = Strip(strpart(result, 1))
+
+  if strlen(result) > 0 && result !~# s:python_error_message
+    if a:save
+      call setreg(result_register, result)
+    else
+      let old_register_content = getreg(result_register, 1)
+      call setreg(result_register, result)
+      silent exec "normal! \"".result_register."Pl"
+      call setreg(result_register, old_register_content)
+    endif
+  endif
 endfunction
+
 
 " Substitute removes leading and trailing whitespace
 " Credit to: http://stackoverflow.com/a/4479072
