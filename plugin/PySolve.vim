@@ -42,17 +42,17 @@ exec s:pysolve_python 'from math import *'
 
 
 " Constants
-let s:default_register = 'm'
-let s:expression_input_prompt = 'Python Exp: '
-let s:register_input_prompt = 'Register: '
-let s:python_error_message = 'Error detected while processing'
+let s:DEFAULT_REGISTER = 'm'
+let s:EXPRESSION_INPUT_PROMPT = 'Python Exp: '
+let s:REGISTER_INPUT_PROMPT = 'Register: '
+let s:PYTHON_ERROR_MESSAGE = 'Error detected while processing'
 
 
 " Main expression evaluator
 function! PySolve(save, ...)
   " Either ask for the expression or use the one already provided
   if a:0 == 0
-    let exp = Strip(input(s:expression_input_prompt))
+    let exp = Strip(input(s:EXPRESSION_INPUT_PROMPT))
   else
     let exp = a:1
   endif
@@ -69,9 +69,9 @@ function! PySolve(save, ...)
   " Remove extra starting byte and leading/trailing whitespace
   let result = Strip(strpart(result, 1))
 
-  if !empty(result) && result !~# s:python_error_message
+  if !empty(result) && result !~# s:PYTHON_ERROR_MESSAGE
     if a:save
-      let result_register = Strip(input(s:register_input_prompt))
+      let result_register = Strip(input(s:REGISTER_INPUT_PROMPT))
       if strlen(result_register) != 1
         echohl WarningMsg
         echo "\nInvalid register."
@@ -80,10 +80,10 @@ function! PySolve(save, ...)
       endif
       call setreg(result_register, result)
     else
-      let old_register_content = getreg(s:default_register, 1)
-      call setreg(s:default_register, result)
-      silent exec "normal! \"".s:default_register."Pl"
-      call setreg(s:default_register, old_register_content)
+      let old_register_content = getreg(s:DEFAULT_REGISTER, 1)
+      call setreg(s:DEFAULT_REGISTER, result)
+      silent exec "normal! \"".s:DEFAULT_REGISTER."Pl"
+      call setreg(s:DEFAULT_REGISTER, old_register_content)
     endif
   endif
 endfunction
