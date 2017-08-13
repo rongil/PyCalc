@@ -14,9 +14,9 @@
 "                       dont't store.
 "
 " Insert Mode: (No default mappings)
-" PySolve     - <YOUR_KEY> <C-O>:call PySolve(0)<CR>
-" PySolveSave - <YOUR_KEY> <C-O>:call PySolve(1)<CR>
-" PySolveView - <YOUR_KEY> <C-O>:call PySolveView<CR>
+" PySolve     - <YOUR_KEY> <C-\><C-O>:call PySolve(0)<CR>
+" PySolveSave - <YOUR_KEY> <C-\><C-O>:call PySolve(1)<CR>
+" PySolveView - <YOUR_KEY> <C-\><C-O>:call PySolveView<CR>
 " ------------------------------------------------------------------------------
 
 " Set python version
@@ -98,7 +98,7 @@ endfunction
 
 " Adapted from: https://superuser.com/a/723715
 function! CursorAtEndOfLine()
-  return col('.') == col('$')-1
+  return col('.') == col('$')
 endfunction
 
 " Substitute removes leading and trailing whitespace

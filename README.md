@@ -11,6 +11,6 @@ Note: There are no default mappings.
 `:PySolveView <args>` - Print solved python expression, args, as a message; dont't store.
 
 #### Insert Mode:
-PySolve → *<YOUR_KEY>* `<C-O>:call PySolve(0)<CR>`<br>
-PySolveSave → *<YOUR_KEY>* `<C-O>:call PySolve(1)<CR>`<br>
-PySolveView → *<YOUR_KEY>* `<C-O>:call PySolveView<CR>`<br>
+PySolve → *<YOUR_KEY>* `<C-\><C-O>:call PySolve(0)<CR>`<br>
+PySolveSave → *<YOUR_KEY>* `<C-\><C-O>:call PySolve(1)<CR>`<br>
+PySolveView → *<YOUR_KEY>* `<C-\><C-O>:call PySolveView<CR>`<br>
