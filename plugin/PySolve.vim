@@ -82,12 +82,24 @@ function! PySolve(save, ...)
     else
       let old_register_content = getreg(s:DEFAULT_REGISTER, 1)
       call setreg(s:DEFAULT_REGISTER, result)
-      silent exec "normal! \"".s:DEFAULT_REGISTER."Pl"
+
+      let paste_type = CursorAtEndOfLine() ? 'p' : 'P'
+      silent exec "normal! \"".s:DEFAULT_REGISTER.paste_type
+
+      " Move cursor one byte to the right so it's at the
+      " end of the inserted output in the buffer
+      call cursor(0, col('.')+1)
+
       call setreg(s:DEFAULT_REGISTER, old_register_content)
     endif
   endif
 endfunction
 
+
+" Adapted from: https://superuser.com/a/723715
+function! CursorAtEndOfLine()
+  return col('.') == col('$')-1
+endfunction
 
 " Substitute removes leading and trailing whitespace
 " Credit to: http://stackoverflow.com/a/4479072
